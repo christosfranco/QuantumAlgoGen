@@ -1,8 +1,26 @@
-version: "3.8"
+version: '3.8'
+
 services:
   quantumsafe:
-    build: .
-    container_name: quantumsafe_builder
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quantumsafe_container
+    environment:
+      - OPENSSL_CONF=/root/quantumsafe/build/ssl/openssl.cnf
+      - OPENSSL_MODULES=/root/quantumsafe/build/lib
     volumes:
-      - ./workspace:/root/quantumsafe
+      - ./data:/root/quantumsafe/data
+    tty: true
+
+  fips_quantumsafe:
+    build:
+      context: .
+      dockerfile: fips.Dockerfile
+    container_name: fips_quantumsafe_container
+    environment:
+      - OPENSSL_CONF=/root/quantumsafe/build/ssl/openssl.cnf
+      - OPENSSL_MODULES=/root/quantumsafe/build/lib
+    volumes:
+      - ./data:/root/quantumsafe/data
     tty: true
